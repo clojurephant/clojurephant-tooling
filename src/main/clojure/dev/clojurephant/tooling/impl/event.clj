@@ -2,7 +2,7 @@
   (:import [org.gradle.tooling.events OperationDescriptor ProgressListener ProgressEvent StartEvent FinishEvent StatusEvent]
            [org.gradle.tooling.events.download FileDownloadOperationDescriptor FileDownloadFinishEvent FileDownloadProgressEvent FileDownloadStartEvent]
            [org.gradle.tooling.events.configuration ProjectConfigurationOperationDescriptor ProjectConfigurationFinishEvent ProjectConfigurationProgressEvent ProjectConfigurationStartEvent]
-           [org.gradle.tooling.events.task TaskOperationDescriptor TaskFinishEvent TaskProgressEvent TaskStartEvent]
+           [org.gradle.tooling.events.task TaskOperationDescriptor TaskFinishEvent TaskProgressEvent TaskStartEvent TaskSuccessResult TaskSkippedResult TaskFailureResult]
            [org.gradle.tooling.events.test JvmTestOperationDescriptor TestOperationDescriptor TestOutputDescriptor TestFinishEvent TestOutputEvent TestProgressEvent TestStartEvent]
            [org.gradle.tooling.events.transform TransformOperationDescriptor TransformFinishEvent TransformProgressEvent TransformStartEvent]
            [org.gradle.tooling.events.work WorkItemOperationDescriptor WorkItemProgressEvent WorkItemProgressEvent WorkItemStartEvent]))
@@ -89,3 +89,47 @@
 
 (defn operation [op]
   (parse-operation op))
+
+(defn base-parse-event [event]
+  {:operation (operation (.getDescriptor event))
+   :state (cond
+            (instance? StartEvent event) :start
+            (instance? StatusEvent event) :status
+            (instance? FinishEvent event) :finish
+            :else :unknown)
+   :display-name (.getDisplayName event)
+   :time (.getEventTime event)})
+
+(defn task-result [result]
+  (cond
+    (instance? TaskSuccessResult result)
+    {:result :success
+     :up-to-date (.isUpToDate result)
+     :from-cache (.isFromCache result)}
+
+    (instance? TaskSkippedResult result)
+    {:result :skipped
+     :reason (.getSkipMessage result)}
+
+    (instance? TaskFailureResult result)
+    {:result :failed
+     :failures (.getFailures result)}
+
+    :else
+    {:result :unknown
+     :detail result}))
+
+(defprotocol EventParser
+  (parse-event [event]))
+
+(extend-protocol EventParser
+  TaskFinishEvent
+  (parse-event [event]
+    (-> (base-parse-event event)
+        (assoc :result (task-result (.getResult event)))))
+  ProgressEvent
+  (parse-event [event]
+    (base-parse-event event)))
+
+(defn event [e]
+  (parse-event e))

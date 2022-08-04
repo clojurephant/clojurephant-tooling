@@ -10,29 +10,36 @@
       (.forProjectDirectory (io/file dir))
       (.connect)))
 
-(defn listener []
+(defn tap-listener []
   (reify ProgressListener
     (statusChanged [this event]
-      (println {:operation (event/operation (.getDescriptor event))
-                :display-name (.getDisplayName event)
-                :time (.getEventTime event)}))))
+      (println (event/event event)))))
 
-(defn handler [done]
+(defn collecting-listener [db]
+  (reify ProgressListener
+    (statusChanged [this event]
+      (swap! db conj (event/event event)))))
+
+(defn handler [done db]
   (reify ResultHandler
     (onComplete [this result]
       (deliver done {:result :success
-                     :value result}))
+                     :value result
+                     :events @db}))
     (onFailure [this failure]
       (deliver done {:result :failed
-                     :error failure}))))
+                     :error failure
+                     :events @db}))))
 
 (defn run [con launcher]
   (let [cancel-source (GradleConnector/newCancellationTokenSource)
-        done (promise)]
+        done (promise)
+        db (atom [])]
     (-> launcher
-        (.addProgressListener (listener))
+        #_(.addProgressListener (tap-listener))
+        (.addProgressListener (collecting-listener db))
         (.withCancellationToken (.token cancel-source))
-        (.run (handler done)))
+        (.run (handler done db)))
     done))
 
 (defn build [con & tasks]
