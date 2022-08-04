@@ -1,6 +1,7 @@
 (ns dev.clojurephant.tooling.core
   (:require [clojure.string :as string]
-            [clojure.java.io :as io])
+            [clojure.java.io :as io]
+            [dev.clojurephant.tooling.impl.event :as event])
   (:import [org.gradle.tooling GradleConnector ResultHandler]
            [org.gradle.tooling.events ProgressListener]))
 
@@ -8,6 +9,13 @@
   (-> (GradleConnector/newConnector)
       (.forProjectDirectory (io/file dir))
       (.connect)))
+
+(defn listener []
+  (reify ProgressListener
+    (statusChanged [this event]
+      (println {:operation (event/operation (.getDescriptor event))
+                :display-name (.getDisplayName event)
+                :time (.getEventTime event)}))))
 
 (defn handler [done]
   (reify ResultHandler
@@ -22,6 +30,7 @@
   (let [cancel-source (GradleConnector/newCancellationTokenSource)
         done (promise)]
     (-> launcher
+        (.addProgressListener (listener))
         (.withCancellationToken (.token cancel-source))
         (.run (handler done)))
     done))
