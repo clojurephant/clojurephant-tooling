@@ -1,0 +1,9 @@
+# Gradle
+.gradle/
+build/
+
+# Clojure
+.nrepl-port
+.calva/
+.clj-kondo/
+.vscode/
