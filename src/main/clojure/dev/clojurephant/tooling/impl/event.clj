@@ -78,7 +78,7 @@
 
   OperationDescriptor
   (parse-operation [op]
-    {:descriptor :unknown
+    {:descriptor :generic
      :display-name (.getDisplayName op)
      :name (.getName op)
      :parent (parse-operation (.getParent op))})
