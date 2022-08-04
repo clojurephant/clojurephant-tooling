@@ -3,7 +3,7 @@
            [org.gradle.tooling.events.download FileDownloadOperationDescriptor FileDownloadFinishEvent FileDownloadProgressEvent FileDownloadStartEvent]
            [org.gradle.tooling.events.configuration ProjectConfigurationOperationDescriptor ProjectConfigurationFinishEvent ProjectConfigurationProgressEvent ProjectConfigurationStartEvent]
            [org.gradle.tooling.events.task TaskOperationDescriptor TaskFinishEvent TaskProgressEvent TaskStartEvent TaskSuccessResult TaskSkippedResult TaskFailureResult]
-           [org.gradle.tooling.events.test JvmTestOperationDescriptor TestOperationDescriptor TestOutputDescriptor TestFinishEvent TestOutputEvent TestProgressEvent TestStartEvent]
+           [org.gradle.tooling.events.test JvmTestOperationDescriptor TestOperationDescriptor TestOutputDescriptor TestFinishEvent TestOutputEvent TestProgressEvent TestStartEvent TestFailureResult TestSkippedResult TestSuccessResult]
            [org.gradle.tooling.events.transform TransformOperationDescriptor TransformFinishEvent TransformProgressEvent TransformStartEvent]
            [org.gradle.tooling.events.work WorkItemOperationDescriptor WorkItemProgressEvent WorkItemProgressEvent WorkItemStartEvent]))
 
@@ -127,6 +127,15 @@
   (parse-event [event]
     (-> (base-parse-event event)
         (assoc :result (task-result (.getResult event)))))
+
+  TestFinishEvent
+  (parse-event [event]
+    (-> (base-parse-event event)
+        (assoc :result (cond
+                         (instance? TestSuccessResult (.getResult event)) :success
+                         (instance? TestSkippedResult (.getResult event)) :skipped
+                         (instance? TestFailureResult (.getResult event)) :failed))))
+
   ProgressEvent
   (parse-event [event]
     (base-parse-event event)))
