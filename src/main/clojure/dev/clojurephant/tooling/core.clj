@@ -33,22 +33,27 @@
                      :error failure
                      :events @db}))))
 
-(defn run [con launcher]
+(defn build [con & tasks]
   (let [cancel-source (GradleConnector/newCancellationTokenSource)
         done (promise)
         db (atom [])]
-    (-> launcher
+    (-> (.newBuild con)
+        (.forTasks (into-array String tasks))
+        (.setJavaHome (io/file "/usr/lib/jvm/java-18-openjdk-amd64"))
+        (.setStandardOutput System/out)
+        (.setStandardError System/err)
         #_(.addProgressListener (tap-listener))
         (.addProgressListener (collecting-listener db))
         (.withCancellationToken (.token cancel-source))
         (.run (handler done db)))
-    done))
+    {:result done
+     :cancel cancel-source}))
 
-(defn build [con & tasks]
-  (let [launcher (-> (.newBuild con)
-                     (.forTasks (into-array String tasks))
-                     (.setJavaHome (io/file "/usr/lib/jvm/java-18-openjdk-amd64"))
-                     (.setStandardOutput System/out)
-                     (.setStandardError System/err))]
-    (run con launcher)))
+(defn result [run]
+  @(:result run))
+
+(defn cancel [run]
+  (.cancel (:cancel run))
+  run)
+
 
