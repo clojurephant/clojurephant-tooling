@@ -11,14 +11,16 @@
       (.connect)))
 
 (defn tap-listener []
-  (reify ProgressListener
-    (statusChanged [this event]
-      (println (event/event event)))))
+  (let [cache (atom {})]
+    (reify ProgressListener
+      (statusChanged [this event]
+        (println (event/event event cache))))))
 
 (defn collecting-listener [db]
-  (reify ProgressListener
-    (statusChanged [this event]
-      (swap! db conj (event/event event)))))
+  (let [cache (atom {})]
+    (reify ProgressListener
+      (statusChanged [this event]
+        (swap! db conj (event/event event cache))))))
 
 (defn handler [done db]
   (reify ResultHandler

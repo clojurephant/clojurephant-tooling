@@ -87,11 +87,14 @@
   (parse-operation [op]
     nil))
 
-(defn operation [op]
-  (parse-operation op))
+(defn operation [op cache]
+  (let [parsed (or (get @cache op)
+                   (parse-operation op))]
+    (swap! cache assoc op parsed)
+    parsed))
 
-(defn base-parse-event [event]
-  {:operation (operation (.getDescriptor event))
+(defn base-parse-event [event cache]
+  {:operation (operation (.getDescriptor event) cache)
    :state (cond
             (instance? StartEvent event) :start
             (instance? StatusEvent event) :status
@@ -120,25 +123,25 @@
      :detail result}))
 
 (defprotocol EventParser
-  (parse-event [event]))
+  (parse-event [event cache]))
 
 (extend-protocol EventParser
   TaskFinishEvent
-  (parse-event [event]
-    (-> (base-parse-event event)
+  (parse-event [event cache]
+    (-> (base-parse-event event cache)
         (assoc :result (task-result (.getResult event)))))
 
   TestFinishEvent
-  (parse-event [event]
-    (-> (base-parse-event event)
+  (parse-event [event cache]
+    (-> (base-parse-event event cache)
         (assoc :result (cond
                          (instance? TestSuccessResult (.getResult event)) :success
                          (instance? TestSkippedResult (.getResult event)) :skipped
                          (instance? TestFailureResult (.getResult event)) :failed))))
 
   ProgressEvent
-  (parse-event [event]
-    (base-parse-event event)))
+  (parse-event [event cache]
+    (base-parse-event event cache)))
 
-(defn event [e]
-  (parse-event e))
+(defn event [e cache]
+  (parse-event e cache))
