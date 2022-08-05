@@ -49,7 +49,7 @@
     {:result done
      :cancel cancel-source}))
 
-(defn result [run]
+(defn wait [run]
   @(:result run))
 
 (defn cancel [run]
