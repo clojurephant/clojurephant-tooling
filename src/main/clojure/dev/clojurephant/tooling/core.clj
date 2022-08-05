@@ -65,10 +65,11 @@
                         (and (= :task (get-in e [:operation :descriptor]))
                              (= :finish (:state e))))
          simplify (fn [t]
-                    {:task (-> t :operation :name)
-                     :result (:result t)})]
+                    (merge 
+                     {:task (-> t :operation :name)}
+                     (:result t)))]
      (->> (:events result)
           (filter task-finish?)
           (map simplify)
           (filter (fn [t]
-                    (state-filter (-> t :result :result))))))))
+                    (state-filter (:result t))))))))
