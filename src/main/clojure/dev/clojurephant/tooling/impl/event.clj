@@ -103,6 +103,10 @@
    :display-name (.getDisplayName event)
    :time (.getEventTime event)})
 
+(defn task-failures [failure]
+  (cons (.getMessage failure)
+        (map task-failures (.getCauses failure))))
+
 (defn task-result [result]
   (cond
     (instance? TaskSuccessResult result)
@@ -116,7 +120,7 @@
 
     (instance? TaskFailureResult result)
     {:result :failed
-     :failures (.getFailures result)}
+     :failures (map task-failures (.getFailures result))}
 
     :else
     {:result :unknown
