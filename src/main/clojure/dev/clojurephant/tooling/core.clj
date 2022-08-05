@@ -56,4 +56,19 @@
   (.cancel (:cancel run))
   run)
 
-
+(defn task-results
+  ([run]
+   (task-results run any?))
+  ([run state-filter]
+   (let [result (wait run)
+         task-finish? (fn [e]
+                        (and (= :task (get-in e [:operation :descriptor]))
+                             (= :finish (:state e))))
+         simplify (fn [t]
+                    {:task (-> t :operation :name)
+                     :result (:result t)})]
+     (->> (:events result)
+          (filter task-finish?)
+          (map simplify)
+          (filter (fn [t]
+                    (state-filter (-> t :result :result))))))))
