@@ -3,7 +3,8 @@
             [clojure.java.io :as io]
             [dev.clojurephant.tooling.impl.event :as event])
   (:import [org.gradle.tooling GradleConnector ResultHandler]
-           [org.gradle.tooling.events ProgressListener]))
+           [org.gradle.tooling.events ProgressListener]
+           [dev.clojurephant.plugin.common ClojurephantModel]))
 
 (defn connect [dir]
   (-> (GradleConnector/newConnector)
@@ -87,3 +88,6 @@
         (.get (handler done db)))
     {:result done
      :cancel cancel-source}))
+
+(defn clojurephant-model [con]
+  (model con ClojurephantModel))

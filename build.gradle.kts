@@ -23,6 +23,7 @@ java {
 }
 
 dependencies {
+  implementation("org.clojure:clojure:1.11.1")
   implementation("org.gradle:gradle-tooling-api:7.5")
   testRuntimeOnly("org.ajoberstar:jovial:0.3.0")
   devRuntimeOnly("org.slf4j:slf4j-simple:1.7.36")
