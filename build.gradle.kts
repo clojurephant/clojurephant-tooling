@@ -31,6 +31,7 @@ dependencies {
   compileOnly("org.clojure:clojurescript:1.11.60")
   devImplementation("org.clojure:clojurescript:1.11.60")
 
+  compileOnly("nrepl:nrepl:0.9.0")
   compileOnly("cider:piggieback:0.5.3")
   devImplementation("cider:piggieback:0.5.3")
 }
