@@ -73,3 +73,17 @@
           (map simplify)
           (filter (fn [t]
                     (state-filter (:result t))))))))
+
+(defn model [con type]
+  (let [cancel-source (GradleConnector/newCancellationTokenSource)
+        done (promise)
+        db (atom [])]
+    (-> (.model con type)
+        (.setJavaHome (io/file "/usr/lib/jvm/java-18-openjdk-amd64"))
+        (.setStandardOutput System/out)
+        (.setStandardError System/err)
+        (.addProgressListener (collecting-listener db))
+        (.withCancellationToken (.token cancel-source))
+        (.get (handler done db)))
+    {:result done
+     :cancel cancel-source}))
