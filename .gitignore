@@ -2,8 +2,34 @@
 .gradle/
 build/
 
+# IntelliJ
+*.iml
+*.iws
+*.ipr
+.idea
+
+# Eclipse
+.settings/
+.project
+.classpath
+bin/
+
+# VS Code
+.vs-code/
+
+# Sublime
+*.sublime-workspace
+
+# Other
+*~
+
+# Java Profiling
+*.jfr
+*.hprof
+
 # Clojure
-.nrepl-port
 .calva/
 .clj-kondo/
-.vscode/
+.lsp/
+.nrepl-port
+*.edn

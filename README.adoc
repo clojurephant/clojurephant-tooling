@@ -1,0 +1,43 @@
+= clojurephant-tooling
+
+image::https://github.com/clojurephant/clojurephant-tooling/actions/workflows/ci.yaml/badge.svg[CI, link=https://github.com/clojurephant/clojurephant-tooling/actions/workflows/ci.yaml]
+image::https://cljdoc.org/badge/dev.clojurephant/clojurephant-tooling[cljdoc, link=https://cljdoc.org/d/dev.clojurephant/clojurephant-tooling/CURRENT]
+
+== What is this?
+
+A library to interact with Gradle's link:https://docs.gradle.org/current/userguide/third_party_integration.html[Tooling API]. This means you can run tasks and inspect a Gradle project from Clojure code, most interestingly the REPL.
+
+In practice, this is targeted mainly as a REPL-helper library for link:https://github.com/clojurephant/clojurephant[clojurephant] users.
+
+* Run ClojureScript builds
+* Start ClojureScript REPLs
+** Browser REPL
+* Run arbitrary Gradle tasks
+
+IMPORTANT: Currently requires un-released clojurephant features to function.
+
+== Why should you care?
+
+Since clojurephant's goal is to provide a Gradle-native experience, but with the creature comforts of a Clojure environment, we want to make it easy to reuse your Gradle configuration to perform tasks in the REPL.
+
+Most importantly this helps configure ClojureScript REPLs properly to use the classpath and configuration from your Gradle project.
+
+== Usage
+
+See the [Release Notes](https://github.com/clojurephant/clojurephant-tooling/releases) for available versions, compatibility with clojurephant versions, and detailed change notes.
+
+**TODO** UNDER CONSTRUCTION
+
+== Getting help
+
+Read the online Clojurephant documentation [https://clojurephant.dev](https://clojurephant.dev).
+
+For questions or support, please visit the [Clojurephant Discussions](https://github.com/clojurephant/clojurephant/discussions).
+
+Legacy channels where you might get luck and find one of us: [ClojureVerse gradle-clojure channel](https://clojureverse.org/c/projects/gradle-clojure) or the [Clojurian's Slack #gradle channel](http://clojurians.net/)
+
+For bug reports and feature requests, please use the repo's [issues](https://github.com/clojurephant/clojurephant-tooling/issues).
+
+== Contributing
+
+See the [guidelines](.github/CONTRIBUTING.md) for details on how you can contribute.
