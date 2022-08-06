@@ -27,6 +27,12 @@ dependencies {
   implementation("org.gradle:gradle-tooling-api:7.5")
   testRuntimeOnly("org.ajoberstar:jovial:0.3.0")
   devRuntimeOnly("org.slf4j:slf4j-simple:1.7.36")
+
+  compileOnly("org.clojure:clojurescript:1.11.60")
+  devImplementation("org.clojure:clojurescript:1.11.60")
+
+  compileOnly("cider:piggieback:0.5.3")
+  devImplementation("cider:piggieback:0.5.3")
 }
 
 tasks.withType<Test>() {

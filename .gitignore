@@ -33,3 +33,4 @@ bin/
 .lsp/
 .nrepl-port
 *.edn
+out/
