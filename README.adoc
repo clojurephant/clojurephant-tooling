@@ -24,20 +24,20 @@ Most importantly this helps configure ClojureScript REPLs properly to use the cl
 
 == Usage
 
-See the [Release Notes](https://github.com/clojurephant/clojurephant-tooling/releases) for available versions, compatibility with clojurephant versions, and detailed change notes.
+See the link:https://github.com/clojurephant/clojurephant-tooling/releases[Release Notes] for available versions, compatibility with clojurephant versions, and detailed change notes.
 
 **TODO** UNDER CONSTRUCTION
 
 == Getting help
 
-Read the online Clojurephant documentation [https://clojurephant.dev](https://clojurephant.dev).
+Read the online Clojurephant documentation link:https://clojurephant.dev[https://clojurephant.dev].
 
-For questions or support, please visit the [Clojurephant Discussions](https://github.com/clojurephant/clojurephant/discussions).
+For questions or support, please visit the link:https://github.com/clojurephant/clojurephant/discussions[Clojurephant Discussions].
 
-Legacy channels where you might get luck and find one of us: [ClojureVerse gradle-clojure channel](https://clojureverse.org/c/projects/gradle-clojure) or the [Clojurian's Slack #gradle channel](http://clojurians.net/)
+Legacy channels where you might get luck and find one of us: link:https://clojureverse.org/c/projects/gradle-clojure[ClojureVerse gradle-clojure channel] or the link:http://clojurians.net/[Clojurian's Slack #gradle channel]
 
-For bug reports and feature requests, please use the repo's [issues](https://github.com/clojurephant/clojurephant-tooling/issues).
+For bug reports and feature requests, please use the repo's link:https://github.com/clojurephant/clojurephant-tooling/issues[issues].
 
 == Contributing
 
-See the [guidelines](.github/CONTRIBUTING.md) for details on how you can contribute.
+See the link:.github/CONTRIBUTING.md[guidelines] for details on how you can contribute.
