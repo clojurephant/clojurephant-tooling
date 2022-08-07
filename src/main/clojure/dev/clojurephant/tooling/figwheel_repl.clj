@@ -5,7 +5,8 @@
             [figwheel.repl :as repl]))
 
 (defn repl-env [id]
-    (let [opts (cljs/build-opts id)
+  (let [opts (assoc (cljs/build-opts id)
+                    :open-url false)
           env (repl/repl-env* opts)]
       (cljs/repl-env! id env)))
 
