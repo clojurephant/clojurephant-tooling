@@ -46,7 +46,9 @@
                    (cond
                      (nil? dir) nil
                      (boolean? dir) dir
-                     :else (string/replace dir old-dir new-dir)))]
+                     :else (-> dir
+                               (string/replace old-dir new-dir)
+                               (string/replace (str (System/getProperty "user.dir") "/") ""))))]
     (-> (:compiler build)
         (update-in [:output-dir] replacer)
         (update-in [:output-to] replacer)
