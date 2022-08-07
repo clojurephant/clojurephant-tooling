@@ -43,7 +43,7 @@
 
 (defn repl-env!
   ([id]
-   (get-in registry [id :repl-env]))
+   (get-in @registry [id :repl-env]))
   ([id env]
    (swap! registry update-in [id :repl-env]
           (fn [old-env]
