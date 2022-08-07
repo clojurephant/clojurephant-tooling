@@ -1,34 +1,46 @@
 (ns dev.clojurephant.tooling.api
   (:require [dev.clojurephant.tooling.core :as core]
+            [clojure.edn :as edn]
             [clojure.string :as string]))
 
 (defonce db (atom {}))
 
-(defn connect [dir]
-  (swap! db update :con
-         (fn [existing-con]
-           (if existing-con
-             (throw (ex-info "Must close existing connection" {}))
-             (core/connect dir)))))
+(defn connect! [project-dir]
+  (swap! db (fn [{:keys [dir connection] :as current-db}]
+              (cond
+                (nil? connection)
+                (merge current-db
+                       {:dir project-dir
+                        :connection (core/connect project-dir)})
 
-(defn close []
-  (swap! db update :con
-         (fn [existing-con]
-           (when existing-con
-             (.close existing-con)
-             nil))))
+                (= dir project-dir)
+                current-db
 
-(defn model []
+                :else
+                (throw (ex-info "Must close existing connection" {:dir dir})))))
+  nil)
+
+(defn close! []
+  (swap! db (fn [{:keys [connection]}]
+              (when connection
+                (.close connection))
+              nil))
+  nil)
+
+(defn reload-model! []
   (swap! db (fn [current-db]
-              (if-let [con (:con current-db)]
+              (if-let [con (:connection current-db)]
                 (let [m (core/wait (core/clojurephant-model con))]
                   (if (= :success (:result m))
-                    (assoc current-db :model (read-string (.getEdn (:value m))))
+                    (assoc current-db :model (edn/read-string (.getEdn (:value m))))
                     (throw (ex-info "Failed to get Clojurephant model"
                                     (select-keys m [:error])))))
                 (throw (ex-info "Cannot get model until connect" {}))))))
 
-(defn reroot-cljs-build [build new-dir]
+(defn repl-output-dir []
+  (-> @db :model :repl :dir))
+
+(defn ^:private reroot-cljs-build [build new-dir]
   (let [old-dir (:output-dir build)
         replacer (fn [dir]
                    (cond
@@ -40,13 +52,13 @@
         (update-in [:output-to] replacer)
         (update-in [:source-map] replacer))))
 
-(defn repl-cljs-builds []
+(defn cljs-all-build-opts []
   (let [m (:model @db)
-        repl-dir (-> m :repl :dir)
+        repl-dir (repl-output-dir)
         builds (:clojurescript m)]
     (into {} (map (fn [[id build]]
                  [id (reroot-cljs-build build repl-dir)]))
           builds)))
 
-(defn repl-cljs-build [id]
-  (get (repl-cljs-builds) id))
+(defn cljs-build-opts [id]
+  (get (cljs-all-build-opts) id))

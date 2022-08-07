@@ -34,6 +34,14 @@ dependencies {
   compileOnly("nrepl:nrepl:0.9.0")
   compileOnly("cider:piggieback:0.5.3")
   devImplementation("cider:piggieback:0.5.3")
+
+  compileOnly("com.bhauman:figwheel-repl:0.2.18")
+  devImplementation("com.bhauman:figwheel-repl:0.2.18")
+
+  compileOnly("ring:ring-jetty-adapter:1.9.5")
+  devImplementation("ring:ring-jetty-adapter:1.9.5")
+  compileOnly("org.eclipse.jetty.websocket:websocket-server:9.4.7.v20180619")
+  devImplementation("org.eclipse.jetty.websocket:websocket-server:9.4.7.v20180619")
 }
 
 tasks.withType<Test>() {
