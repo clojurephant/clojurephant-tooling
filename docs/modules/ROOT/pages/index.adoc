@@ -1,6 +1,6 @@
 = Introduction
 
-The Clojurephant Tooling API (link:https://github.com/clojurephant/clojurephant-tooling[GitHub Repo]) is a sibling project to link:https://github.com/clojurephant/clojurephant[Clojurephant], the Gradle plugin providing support for Clojure and ClojureScript builds.
+The Clojurephant Tooling API (link:https://github.com/clojurephant/clojurephant-tooling[GitHub Repo]) is a sibling project to xref:clojurephant::index.adoc[Clojurephant], the Gradle plugin providing support for Clojure and ClojureScript builds.
 
 This library is meant for use from a Clojure REPL to interact with a Gradle project using Clojurephant.
 
