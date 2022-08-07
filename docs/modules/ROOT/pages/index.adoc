@@ -1,0 +1,20 @@
+= Introduction
+
+The Clojurephant Tooling API (link:https://github.com/clojurephant/clojurephant-tooling[GitHub Repo]) is a sibling project to link:https://github.com/clojurephant/clojurephant[Clojurephant], the Gradle plugin providing support for Clojure and ClojureScript builds.
+
+This library is meant for use from a Clojure REPL to interact with a Gradle project using Clojurephant.
+
+CAUTION: The features and API should not be considered stable until 1.0.0.
+
+== Features
+
+* General Clojure wrapper for link:https://docs.gradle.org/current/userguide/third_party_integration.html[Gradle's Tooling API]
+* Access to Clojurephant's Gradle configuration from the REPL
+* Compile ClojureScript builds (including in watch mode)
+* Start ClojureScript REPLs based on:
+** Figwheel Main - with full hot code reloading
+** Figwheel REPL - for a more tranditional workflow, evaluating forms
+
+== API Documentation
+
+See API reference on link:https://cljdoc.org/d/dev.clojurephant/clojurephant-tooling/CURRENT[cljdoc].

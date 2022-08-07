@@ -1,0 +1,8 @@
+name: clojurephant-tooling
+version: true
+nav:
+  - modules/ROOT/nav.adoc
+asciidoc:
+  attributes:
+    clojurephant-version: "0.7.0"
+    clojurephant-tooling-version: "x.y.z"
