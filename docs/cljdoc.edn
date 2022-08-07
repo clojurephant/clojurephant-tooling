@@ -1,0 +1,2 @@
+{:cljdoc.doc/tree [["README" {:file "README.md"}]
+                   ["Contributors" {:file ".github/CONTRIBUTING.md"}]]}

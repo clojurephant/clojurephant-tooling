@@ -32,5 +32,4 @@ bin/
 .clj-kondo/
 .lsp/
 .nrepl-port
-*.edn
 out/
