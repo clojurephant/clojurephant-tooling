@@ -34,7 +34,7 @@ dependencies {
   api("org.clojure:clojure:1.11.1")
 
   // gradle
-  compileOnlyApi("org.gradle:gradle-tooling-api:7.5")
+  compileOnly("org.gradle:gradle-tooling-api:7.5")
 
   // clojurescript and nrepl
   api("org.clojure:clojurescript:1.11.60")
