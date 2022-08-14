@@ -84,10 +84,37 @@ publishing {
   publications {
     create<MavenPublication>("main") {
       from(components["java"])
+
+      versionMapping {
+        usage("java-api") { fromResolutionOf("runtimeClasspath") }
+        usage("java-runtime") { fromResolutionResult() }
+      }
+
+      pom {
+        name.set(project.name)
+        description.set(project.description)
+        url.set("https://github.com/clojurephant/clojurephant-tooling")
+
+        developers {
+          developer {
+            name.set("Andrew Oberstar")
+            email.set("andrew@ajoberstar.org")
+          }
+        }
+
+        licenses {
+          license {
+            name.set("Apache License 2.0")
+            url.set("https://github.com/clojurephant/jovial/blob/main/LICENSE")
+          }
+        }
+
+        scm {
+          url.set("https://github.com/clojurephant/clojurephant-tooling")
+          connection.set("scm:git:git@github.com:clojurephant/clojurephant-tooling.git")
+          developerConnection.set("scm:git:git@github.com:clojurephant/clojurephant-tooling.git")
+        }
+      }
     }
   }
-}
-
-tasks.withType<GenerateModuleMetadata>() {
-  enabled = false
 }
