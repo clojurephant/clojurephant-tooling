@@ -16,9 +16,9 @@
   Uses the build configuration from Gradle. Presumes
   (api/reload-model!) has been called beforehand."
   [id]
-  (let [opts (assoc (cljs/build-opts id)
-                    :open-url false)
-          env (repl/repl-env* opts)]
+  (let [opts (merge (api/cljs-build-opts id)
+                    (api/figwheel-opts id))
+        env (repl/repl-env* opts)]
       (cljs/repl-env! id env)))
 
 (defn cljs-repl

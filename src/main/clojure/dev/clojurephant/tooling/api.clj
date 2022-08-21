@@ -58,37 +58,57 @@
   []
   (-> @db :model :repl :dir))
 
+(defn ^:private reroot-dir
+  "Takes the old and new root directories and returns
+  a function that relatives a path starting under old
+  to now be under new."
+  [old-dir new-dir]
+  (fn [dir]
+    (cond
+      (nil? dir) nil
+      (boolean? dir) dir
+      :else (-> dir
+                (string/replace old-dir new-dir)
+                (string/replace (str (System/getProperty "user.dir") "/") "")))))
+
+(defn ^:private reroot-cljs-compiler
+  [compiler rerooter]
+  (-> compiler
+      (update-in [:output-dir] rerooter)
+      (update-in [:output-to] rerooter)
+      (update-in [:source-map] rerooter)))
+
+(defn ^:private reroot-figwheel
+  [figwheel rerooter]
+  (update-in figwheel [:target-dir] rerooter))
+
 (defn ^:private reroot-cljs-build
   "Takes a ClojureScript build and re-evaluates the
   output directories to be relative to the REPL's
   output directory."
   [build new-dir]
   (let [old-dir (:output-dir build)
-        replacer (fn [dir]
-                   (cond
-                     (nil? dir) nil
-                     (boolean? dir) dir
-                     :else (-> dir
-                               (string/replace old-dir new-dir)
-                               (string/replace (str (System/getProperty "user.dir") "/") ""))))]
-    (-> (:compiler build)
-        (update-in [:output-dir] replacer)
-        (update-in [:output-to] replacer)
-        (update-in [:source-map] replacer))))
+        rerooter(reroot-dir old-dir new-dir)]
+    (-> build
+        (update :compiler (fn [c] (reroot-cljs-compiler c rerooter)))
+        (update :figwheel (fn [f] (reroot-figwheel f rerooter))))))
 
-(defn cljs-all-build-opts
-  "Returns a map of all ClojureScript build's compiler options.
-  Key is a keyword of the build name, value is a map of compiler
-  options."
+(defn cljs-builds
+  "Returns a map of all ClojureScript builds.
+  Key is a keyword of the build name."
   []
-  (let [m (:model @db)
-        repl-dir (repl-output-dir)
-        builds (:clojurescript m)]
+  (let [builds (get-in @db [:model :clojurescript])
+        repl-dir (repl-output-dir)]
     (into {} (map (fn [[id build]]
-                 [id (reroot-cljs-build build repl-dir)]))
+                    [id (reroot-cljs-build build repl-dir)]))
           builds)))
 
 (defn cljs-build-opts
   "Returns a map of compiler options for the build ID."
   [id]
-  (get (cljs-all-build-opts) id))
+  (get-in (cljs-builds) [id :compiler]))
+
+(defn figwheel-opts
+  "Returns a map of Figwheel options for the build ID."
+  [id]
+  (get-in (cljs-builds) [id :figwheel]))

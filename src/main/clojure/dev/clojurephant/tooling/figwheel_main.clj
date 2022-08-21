@@ -16,7 +16,7 @@
   [id]
   {:id (name id)
    :options (api/cljs-build-opts id)
-   :config {}})
+   :config (api/figwheel-opts id)})
 
 (defn cljs-repl
   "Starts a ClojureScript REPL using
