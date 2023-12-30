@@ -58,7 +58,7 @@
         db (atom [])]
     (-> (.newBuild con)
         (.forTasks (into-array String tasks))
-        (.setJavaHome (io/file "/usr/lib/jvm/java-18-openjdk-amd64"))
+        ;(.setJavaHome (io/file "/usr/lib/jvm/java-18-openjdk-amd64"))
         (.setStandardOutput System/out)
         (.setStandardError System/err)
         (.addProgressListener (collecting-listener db))
@@ -90,7 +90,7 @@
                         (and (= :task (get-in e [:operation :descriptor]))
                              (= :finish (:state e))))
          simplify (fn [t]
-                    (merge 
+                    (merge
                      {:task (-> t :operation :name)}
                      (:result t)))]
      (->> (:events result)
@@ -108,7 +108,7 @@
         done (promise)
         db (atom [])]
     (-> (.model con type)
-        (.setJavaHome (io/file "/usr/lib/jvm/java-18-openjdk-amd64"))
+        ;(.setJavaHome (io/file "/usr/lib/jvm/java-18-openjdk-amd64"))
         (.setStandardOutput System/out)
         (.setStandardError System/err)
         (.withCancellationToken (.token cancel-source))
