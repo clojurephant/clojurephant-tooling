@@ -34,24 +34,24 @@ dependencies {
   api("org.clojure:clojure:1.11.1")
 
   // gradle
-  compileOnly("org.gradle:gradle-tooling-api:7.5")
+  compileOnly("org.gradle:gradle-tooling-api:8.5")
 
   // clojurescript and nrepl
-  api("org.clojure:clojurescript:1.11.60")
-  api("nrepl:nrepl:0.9.0")
+  api("org.clojure:clojurescript:1.11.121")
+  api("nrepl:nrepl:1.1.0")
   api("cider:piggieback:0.5.3")
 
   // figwheel repl
   "figwheelReplApi"("com.bhauman:figwheel-repl:0.2.18")
-  "figwheelReplApi"("ring:ring-jetty-adapter:1.9.5")
-  "figwheelReplApi"("org.eclipse.jetty.websocket:websocket-server:9.4.7.v20180619")
+  "figwheelReplApi"("ring:ring-jetty-adapter:1.11.0")
+  "figwheelReplApi"("org.eclipse.jetty.websocket:websocket-server:9.4.53.v20231009")
 
   // figwheel main
   "figwheelMainApi"("com.bhauman:figwheel-main:0.2.18")
 
   // testing
-  testRuntimeOnly("org.ajoberstar:jovial:0.3.0")
-  devRuntimeOnly("org.slf4j:slf4j-simple:1.7.36")
+  testRuntimeOnly("org.ajoberstar:jovial:0.4.1")
+  devRuntimeOnly("org.slf4j:slf4j-simple:2.0.10")
 }
 
 tasks.withType<Test>() {

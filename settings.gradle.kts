@@ -1,7 +1,15 @@
 pluginManagement {
   plugins {
-    id("dev.clojurephant.clojure") version("0.7.0-rc.1")
-    id("org.ajoberstar.reckon") version("0.16.1")    
+    id("dev.clojurephant.clojure") version("0.7.0")
+    id("org.ajoberstar.reckon") version("0.18.2")
+  }
+
+  repositories {
+    mavenCentral()
+    maven {
+      name = "Clojars"
+      url = uri("https://repo.clojars.org/")
+    }
   }
 }
 
@@ -24,4 +32,3 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "clojurephant-tooling"
-    
