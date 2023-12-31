@@ -1,8 +1,27 @@
 pluginManagement {
   plugins {
-    id("dev.clojurephant.clojure") version("0.7.0-rc.1")
-    id("org.ajoberstar.reckon") version("0.16.1")    
+    id("dev.clojurephant.clojure") version("0.8.0-beta.4")
+    id("org.ajoberstar.reckon.settings") version("0.18.2")
   }
+
+  repositories {
+    mavenCentral()
+    maven {
+      name = "Clojars"
+      url = uri("https://repo.clojars.org/")
+    }
+  }
+}
+
+plugins {
+  id("org.ajoberstar.reckon.settings")
+}
+
+extensions.configure<org.ajoberstar.reckon.gradle.ReckonExtension> {
+  setDefaultInferredScope("patch")
+  stages("beta", "rc", "final")
+  setScopeCalc(calcScopeFromProp().or(calcScopeFromCommitMessages()))
+  setStageCalc(calcStageFromProp())
 }
 
 dependencyResolutionManagement {
@@ -24,4 +43,3 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "clojurephant-tooling"
-    
