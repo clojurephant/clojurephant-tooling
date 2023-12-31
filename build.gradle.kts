@@ -2,18 +2,9 @@ plugins {
   id("dev.clojurephant.clojure")
   id("java-library")
   id("maven-publish")
-
-  id("org.ajoberstar.reckon")
 }
 
 group = "dev.clojurephant"
-
-reckon {
-  setDefaultInferredScope("patch")
-  stages("alpha", "beta", "rc", "final")
-  setScopeCalc(calcScopeFromProp().or(calcScopeFromCommitMessages()))
-  setStageCalc(calcStageFromProp())
-}
 
 java {
   toolchain {
@@ -43,14 +34,14 @@ dependencies {
 
   // figwheel repl
   "figwheelReplApi"("com.bhauman:figwheel-repl:0.2.18")
-  "figwheelReplApi"("ring:ring-jetty-adapter:1.11.0")
-  "figwheelReplApi"("org.eclipse.jetty.websocket:websocket-server:9.4.53.v20231009")
+  "figwheelReplApi"("ring:ring-jetty-adapter:1.9.5")
+  "figwheelReplApi"("org.eclipse.jetty.websocket:websocket-server:9.4.7.v20180619")
 
   // figwheel main
   "figwheelMainApi"("com.bhauman:figwheel-main:0.2.18")
 
   // testing
-  testRuntimeOnly("org.ajoberstar:jovial:0.4.1")
+  testRuntimeOnly("dev.clojurephant:jovial:0.4.2")
   devRuntimeOnly("org.slf4j:slf4j-simple:2.0.10")
 }
 
@@ -59,11 +50,10 @@ tasks.withType<Test>() {
 }
 
 tasks.named<Jar>("jar") {
-  dependsOn(configurations.compileClasspath)
-  from({
-    configurations.compileClasspath.files { dep ->
-      dep.getGroup() == "org.gradle"
-    }.map {
+  from(configurations.compileClasspath.get().map {
+    if (it.isDirectory()) {
+      it
+    } else {
       zipTree(it).matching { include("org/gradle/**/*") }
     }
   })
@@ -104,7 +94,7 @@ publishing {
 
         licenses {
           license {
-            name.set("Apache License 2.0")
+            name.set("Apache-2.0")
             url.set("https://github.com/clojurephant/jovial/blob/main/LICENSE")
           }
         }
