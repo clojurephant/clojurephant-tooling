@@ -1,7 +1,7 @@
 pluginManagement {
   plugins {
-    id("dev.clojurephant.clojure") version("0.8.0-beta.4")
-    id("org.ajoberstar.reckon.settings") version("0.18.2")
+    id("dev.clojurephant.clojure") version("0.8.0")
+    id("org.ajoberstar.reckon.settings") version("0.19.1")
   }
 
   repositories {

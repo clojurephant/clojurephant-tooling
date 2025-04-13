@@ -8,7 +8,7 @@ group = "dev.clojurephant"
 
 java {
   toolchain {
-    languageVersion.set(JavaLanguageVersion.of(8))
+    languageVersion.set(JavaLanguageVersion.of(11))
   }
   withSourcesJar()
 
@@ -22,27 +22,27 @@ java {
 
 dependencies {
   // clojure
-  api("org.clojure:clojure:1.11.1")
+  api("org.clojure:clojure:1.12.0")
 
   // gradle
-  compileOnly("org.gradle:gradle-tooling-api:8.5")
+  compileOnly("org.gradle:gradle-tooling-api:8.13")
 
   // clojurescript and nrepl
-  api("org.clojure:clojurescript:1.11.121")
-  api("nrepl:nrepl:1.1.0")
-  api("cider:piggieback:0.5.3")
+  api("org.clojure:clojurescript:1.11.132")
+  api("nrepl:nrepl:1.3.1")
+  api("cider:piggieback:0.6.0")
 
   // figwheel repl
-  "figwheelReplApi"("com.bhauman:figwheel-repl:0.2.18")
-  "figwheelReplApi"("ring:ring-jetty-adapter:1.9.5")
-  "figwheelReplApi"("org.eclipse.jetty.websocket:websocket-server:9.4.7.v20180619")
+  "figwheelReplApi"("com.bhauman:figwheel-repl:0.2.20")
+  "figwheelReplApi"("ring:ring-jetty-adapter:1.13.0")
+  "figwheelReplApi"("org.eclipse.jetty.websocket:websocket-server:9.4.57.v20241219")
 
   // figwheel main
-  "figwheelMainApi"("com.bhauman:figwheel-main:0.2.18")
+  "figwheelMainApi"("com.bhauman:figwheel-main:0.2.20")
 
   // testing
   testRuntimeOnly("dev.clojurephant:jovial:0.4.2")
-  devRuntimeOnly("org.slf4j:slf4j-simple:2.0.10")
+  devRuntimeOnly("org.slf4j:slf4j-simple:2.0.17")
 }
 
 tasks.withType<Test>() {
