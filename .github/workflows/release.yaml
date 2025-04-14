@@ -22,7 +22,7 @@ jobs:
             21
 
       - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/gradle-build-action@v3
       - name: Gradle publish
         env:
           CLOJARS_USER: ${{ secrets.CLOJARS_USER }}
