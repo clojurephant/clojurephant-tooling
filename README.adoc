@@ -1,6 +1,6 @@
 = clojurephant-tooling
 
-IMPORTANT: This project is now maintained on [SourceHut](https://git.sr.ht/~ajoberstar/clojurephant-tooling).
+IMPORTANT: This project is now maintained on link:https://git.sr.ht/~ajoberstar/clojurephant-tooling[SourceHut].
 
 image::https://github.com/clojurephant/clojurephant-tooling/actions/workflows/ci.yaml/badge.svg[CI, link=https://github.com/clojurephant/clojurephant-tooling/actions/workflows/ci.yaml]
 image::https://cljdoc.org/badge/dev.clojurephant/clojurephant-tooling[cljdoc, link=https://cljdoc.org/d/dev.clojurephant/clojurephant-tooling/CURRENT]
